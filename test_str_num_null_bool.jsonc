@@ -1,0 +1,140 @@
+// ===== JSONC Test File =====
+// This file tests all basic JSONC data types and comment features
+
+{
+	// ===== STRING TYPE =====
+	"string_section": {
+		// Basic string
+		"basic_string": "Hello World",
+
+		// String with special characters
+		"special_chars": "!@#$%^&*()",
+
+		// String with escaped quotes
+		"escaped_quote": "She said \"Hello\"",
+
+		// String with escaped backslash
+		"escaped_backslash": "C:\\Users\\name\\file.txt",
+
+		// String with newline escape
+		"with_newline": "Line 1\nLine 2",
+
+		// String with tab escape
+		"with_tab": "Before\tAfter",
+
+		// Empty string
+		"empty_string": "",
+
+		// String with unicode escape
+		"unicode_escape": "Unicode: \u0041 (A)",
+
+		// String with japanese characters
+		"japanese": "こんにちは世界"
+	},
+
+	// ===== NUMBER TYPE =====
+	"number_section": {
+		// Integer
+		"integer": 42,
+
+		// Negative integer
+		"negative_integer": -100,
+
+		// Zero
+		"zero": 0,
+
+		// Float
+		"float": 3.14159,
+
+		// Negative float
+		"negative_float": -2.71828,
+
+		// Exponential notation (positive exponent)
+		"exponential_positive": 1.5e3, // 1500
+
+		// Exponential notation (negative exponent)
+		"exponential_negative": 2.5e-2, // 0.025
+
+		// Very large number
+		"large_number": 9999999999,
+
+		// Very small number
+		"small_number": 0.0001
+	},
+
+	// ===== BOOLEAN TYPE =====
+	"boolean_section": {
+		// Boolean true
+		"bool_true": true,
+
+		// Boolean false
+		"bool_false": false,
+
+		// Multiple booleans
+		"flags": {
+			"enabled": true,
+			"disabled": false,
+			"active": true
+		}
+	},
+
+	// ===== NULL TYPE =====
+	"null_section": {
+		// Null value
+		"null_value": null,
+
+		// Multiple null values
+		"empty_data": null,
+		"undefined_value": null,
+		"no_value": null
+	},
+
+	/* ===== COMMENT FEATURES =====
+     This section demonstrates various comment styles
+  */
+	"comment_section": {
+		// Single line comment before property
+		"after_single_comment": "value",
+
+		/* Multi-line comment
+       Can span multiple lines
+       Very useful for documentation
+    */
+		"after_multi_comment": "data",
+
+		"inline_comment_example": "value", // Inline comment after value
+
+		/* Another multi-line comment
+       with multiple lines of text
+       explaining the next property
+    */
+		"documented_property": "example value",
+
+		"property_with_inline_comment": true // This is a boolean flag
+	},
+
+	// ===== COMBINED EXAMPLE =====
+	"user_profile": {
+		// User information
+		"username": "john_doe", // String type
+		"user_id": 12345, // Number type
+		"age": 28, // Number type
+		"is_active": true, // Boolean type
+		"is_premium": false, // Boolean type
+		"bio": null, // Null type (not yet filled)
+		"verified_email": true, // Boolean type
+		"join_date": "2023-01-15", // String type
+		"balance": 99.99, // Number type (float)
+
+		/* Contact information
+       Includes multiple contact methods
+    */
+		"contacts": [
+			"email@example.com", // String
+			"555-1234" // String phone
+		]
+	},
+
+	// ===== END OF TEST FILE =====
+	"test_complete": true // Indicates test file is complete
+}
