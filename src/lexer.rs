@@ -31,7 +31,7 @@ impl Lexer {
 
         self.position += 1;
         self.current_char = if self.position < self.input.len() {
-            Some(self.input.chars().nth(self.position).unwrap())
+            self.input.chars().nth(self.position)
         } else {
             None
         };
@@ -158,6 +158,14 @@ impl Lexer {
                 for _ in 0..5 {
                     self.advance();
                 }
+            } else {
+                // Invalid boolean literal
+                self.tokens.push(Token {
+                    token_type: TokenType::Error,
+                    lexeme: c.to_string(),
+                    line: self.line,
+                });
+                self.advance();
             }
         }
     }
@@ -177,6 +185,14 @@ impl Lexer {
             for _ in 0..4 {
                 self.advance();
             }
+        } else {
+            // Invalid null literal
+            self.tokens.push(Token {
+                token_type: TokenType::Error,
+                lexeme: self.current_char.unwrap().to_string(),
+                line: self.line,
+            });
+            self.advance();
         }
     }
 
@@ -188,7 +204,7 @@ impl Lexer {
             Some(']') => TokenType::RBracket,
             Some(':') => TokenType::Colon,
             Some(',') => TokenType::Comma,
-            _ => return,
+            _ => TokenType::Error,
         };
 
         self.tokens.push(Token {
@@ -202,6 +218,7 @@ impl Lexer {
 
     pub fn tokenize(&mut self) {
         while let Some(c) = self.current_char {
+            println!("{}", c);
             match c {
                 c if c.is_whitespace() => {
                     self.skip_whitespace();
