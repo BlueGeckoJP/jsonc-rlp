@@ -37,9 +37,9 @@ impl Lexer {
         };
     }
 
-    pub fn peek(&self) -> Option<char> {
-        if self.position + 1 < self.input.len() {
-            Some(self.input.chars().nth(self.position + 1).unwrap())
+    pub fn peek(&self, offset: usize) -> Option<char> {
+        if self.position + offset < self.input.len() {
+            Some(self.input.chars().nth(self.position + offset).unwrap())
         } else {
             None
         }
@@ -67,7 +67,7 @@ impl Lexer {
 
     pub fn skip_multi_comment(&mut self) {
         while let Some(c) = self.current_char {
-            if c == '*' && self.peek() == Some('/') {
+            if c == '*' && self.peek(1) == Some('/') {
                 self.advance(); // consume '*'
                 self.advance(); // consume '/'
                 break;
@@ -129,6 +129,57 @@ impl Lexer {
         });
     }
 
+    pub fn boolean(&mut self) {
+        if let Some(c) = self.current_char {
+            if c == 't'
+                && self.peek(1) == Some('r')
+                && self.peek(2) == Some('u')
+                && self.peek(3) == Some('e')
+            {
+                self.tokens.push(Token {
+                    token_type: TokenType::Boolean,
+                    lexeme: "true".to_string(),
+                    line: self.line,
+                });
+                for _ in 0..4 {
+                    self.advance();
+                }
+            } else if c == 'f'
+                && self.peek(1) == Some('a')
+                && self.peek(2) == Some('l')
+                && self.peek(3) == Some('s')
+                && self.peek(4) == Some('e')
+            {
+                self.tokens.push(Token {
+                    token_type: TokenType::Boolean,
+                    lexeme: "false".to_string(),
+                    line: self.line,
+                });
+                for _ in 0..5 {
+                    self.advance();
+                }
+            }
+        }
+    }
+
+    pub fn null(&mut self) {
+        if let Some(c) = self.current_char
+            && c == 'n'
+            && self.peek(1) == Some('u')
+            && self.peek(2) == Some('l')
+            && self.peek(3) == Some('l')
+        {
+            self.tokens.push(Token {
+                token_type: TokenType::Null,
+                lexeme: "null".to_string(),
+                line: self.line,
+            });
+            for _ in 0..4 {
+                self.advance();
+            }
+        }
+    }
+
     pub fn special_char(&mut self) {
         let token_type = match self.current_char {
             Some('{') => TokenType::LBrace,
@@ -155,14 +206,20 @@ impl Lexer {
                 c if c.is_whitespace() => {
                     self.skip_whitespace();
                 }
-                c if c == '/' && self.peek() == Some('/') => {
+                c if c == '/' && self.peek(1) == Some('/') => {
                     self.skip_single_comment();
                 }
-                c if c == '/' && self.peek() == Some('*') => {
+                c if c == '/' && self.peek(1) == Some('*') => {
                     self.skip_multi_comment();
                 }
                 c if c.is_ascii_digit() => {
                     self.number();
+                }
+                c if c == 't' || c == 'f' => {
+                    self.boolean();
+                }
+                'n' => {
+                    self.null();
                 }
                 '"' => {
                     self.string();
