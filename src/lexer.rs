@@ -172,5 +172,11 @@ impl Lexer {
                 }
             }
         }
+
+        self.tokens.push(Token {
+            token_type: TokenType::Eof,
+            lexeme: "".to_string(),
+            line: self.line,
+        });
     }
 }
